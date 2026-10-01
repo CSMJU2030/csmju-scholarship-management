@@ -1,27 +1,19 @@
 {
-  "name": "mis-scholarship",
-  "version": "0.1.0",
+  "name": "csmju-scholarship",
   "private": true,
+  "packageManager": "pnpm@12.3.4",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev:backend": "pnpm --filter backend start:dev",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:portal": "node tools/dev-portal/server.mjs",
+    "build": "pnpm -r build",
+    "test": "pnpm --filter backend test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "db:migrate": "pnpm --filter backend db:migrate",
+    "db:seed": "pnpm --filter backend db:seed"
   },
-  "dependencies": {
-    "firebase": "^12.18.0",
-    "next": "16.3.3",
-    "react": "19.2.8",
-    "react-dom": "19.2.8"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.3",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+  "engines": {
+    "node": ">=22 <23"
   }
 }

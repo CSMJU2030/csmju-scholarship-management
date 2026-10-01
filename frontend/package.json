@@ -1,0 +1,30 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3227",
+    "build": "next build",
+    "start": "next start -p 3227",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "generate:api-types": "openapi-typescript ../backend/openapi.json -o src/lib/api-types.ts"
+  },
+  "dependencies": {
+    "next": "16.3.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "lucide-react": "^0.544.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.3",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "openapi-typescript": "^7.9.0"
+  }
+}

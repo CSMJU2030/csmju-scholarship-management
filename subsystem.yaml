@@ -1,0 +1,51 @@
+# manifest ของระบบย่อย — CI และ conformance อ่านไฟล์นี้ไฟล์เดียว
+# schema: standards/schemas/subsystem.schema.json
+# เวอร์ชัน standards อยู่ใน .standards-version
+
+name: csmju-scholarship                # ตรงกับทะเบียน Core Hub และ data.service ของ /api/health
+display_name: ระบบทุนการศึกษาและสวัสดิการนักศึกษา
+conformance_level: L3
+
+# ห้ามใส่บัญชีหรือรหัสผ่านในไฟล์นี้ (standards 1.7.0) — บัญชีทดสอบอยู่ในไฟล์นอก repo ที่ CONFORMANCE_ACCOUNTS_FILE ชี้
+# พอร์ตของทีม: frontend 32xx · backend 42xx ตามที่ผู้ดูแล dev server กำหนด (connect-core-hub.md ข้อ 1)
+# หน้าเว็บ (Next.js :3227) ส่งต่อ /api/* และ /auth/* ไป backend (NestJS :4227) ผู้ใช้จึงเห็น origin เดียว
+base_url: http://localhost:3227
+core_hub_url: https://csmju2030.jowave.com
+core_hub_web_url: https://csmju2030.jowave.com
+callback_path: /auth/callback          # callback_url ที่ลงทะเบียน = http://localhost:3227/auth/callback
+
+default_role_mapping:                  # ต้องตรงกับ backend/src/auth/role-mapping.ts
+  student: STUDENT
+  staff: STAFF
+  lecturer: STAFF
+  admin: ADMIN
+  # alumni · guest ไม่รับ (403)
+
+public_endpoints:
+  - GET /api/health
+  - GET /auth/login
+  - GET /auth/callback
+  - POST /auth/logout
+
+probes:
+  collection: /api/v1/scholarships
+  not_found: /api/v1/scholarships/99999999-9999-4999-8999-999999999999
+  invalid_id: /api/v1/scholarships/not-a-uuid
+  create:
+    path: /api/v1/scholarships
+    allowed_role: staff
+    denied_role: student               # Core Hub จริงไม่มีบัญชีรหัสผ่านของ student — รัน conformance กับพอร์ทัลจำลองในเครื่อง
+    invalid_body:
+      title: ""
+    valid_body:
+      title: ทุนทดสอบสิทธิ์ conformance
+      typeCode: DEPARTMENT
+      amountMinSatang: 100000
+      amountMaxSatang: 100000
+      deadline: "2099-12-31"
+      criteria: เกณฑ์สำหรับทดสอบสิทธิ์
+      description: ใช้ตรวจว่า role ที่ไม่มีสิทธิ์ได้ 403
+
+owners:
+  pl: "@csmju2030/pl-scholarship"
+  aie: "@csmju2030/aie-scholarship"

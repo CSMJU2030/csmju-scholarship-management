@@ -1,9 +1,12 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# AGENTS.md
 
-# This is NOT the Next.js you know
+ระบบนี้เป็นระบบย่อยของแพลตฟอร์ม CSMJU2030 — AI agent ทุกตัวต้องอ่านและทำตาม
+`standards/ai/AGENTS.md` (git submodule ของ `csmju2030-standards`) ก่อนแก้โค้ด
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+สรุปสั้น ๆ ของกฎที่มักพลาดในโปรเจกต์นี้
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
+- stack บังคับ: Node 22 · pnpm 12.3.4 · NestJS 11 (`backend/`) · Prisma 7.9.1 + PostgreSQL (`scholarship_db`) · Next.js App Router (`frontend/`)
+- frontend ห้ามต่อฐานข้อมูลเอง ห้ามมีหน้า login/ฟอร์มรหัสผ่าน — ทุกอย่างผ่าน backend และ Core Hub SSO
+- ตัวตนผู้ใช้คือ `core_user_id` (= `token.sub`) เท่านั้น · เงินเป็นจำนวนเต็มหน่วยสตางค์ · id เป็น UUID v4
+- แก้ endpoint แล้วต้องรัน `pnpm --filter backend generate:openapi` และ `pnpm --filter frontend generate:api-types`
+- ห้ามแก้ไฟล์ใน `standards/` และ `.github/workflows/`
