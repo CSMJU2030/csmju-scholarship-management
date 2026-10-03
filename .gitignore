@@ -1,13 +1,39 @@
-.env
-.env.local
-.env.*.local
+# dependencies
 node_modules/
 .pnpm-store/
-.next/
+
+# build output
 dist/
-build/
+.next/
+out/
 coverage/
-generated/
+*.tsbuildinfo
+next-env.d.ts
+
+# generated
+backend/src/generated/
+
+# secrets (commit เฉพาะ .env.example)
+.env
+.env.*
+!.env.example
+# backend/.env.example ในเครื่องเก็บค่าจริง — ไม่ push (ดูตัวแปรที่ต้องตั้งใน README)
+backend/.env.example
 *.pem
 *.key
-!.env.example
+
+# runtime data
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# lockfiles อื่นที่ไม่ใช่ pnpm (QA-05)
+package-lock.json
+yarn.lock
+
+# misc
+.DS_Store
+npm-debug.log*
+pnpm-debug.log*
+*.log
+_legacy_backup/
+_legacy_backup/

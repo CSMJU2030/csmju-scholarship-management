@@ -1,0 +1,245 @@
+// =====================================================================
+//  csmju-scholarship — ระบบทุนการศึกษาและสวัสดิการนักศึกษา
+//  มาตรฐาน: csmju2030-standards docs/data-dictionary.md
+//    - ตาราง plural snake_case (@@map) · คอลัมน์ snake_case (@map) · field ใน Prisma camelCase
+//    - primary key = id (UUID v4) · foreign key = <entity>_id
+//    - ทุกตารางมี created_at / updated_at
+//    - เงินเก็บเป็น Int หน่วย "สตางค์" (ห้าม Float/Decimal)
+//    - ตัวตนผู้ใช้เก็บแค่ core_user_id (= claim `sub` จาก Core Hub) ห้ามมีตาราง users/รหัสผ่านของตัวเอง
+// =====================================================================
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ------------------------------------------------------------------
+// ข้อมูลอ้างอิงภายในระบบ (local reference data) — อ้างด้วย code
+// ------------------------------------------------------------------
+
+model RequestStatus {
+  code      String   @id
+  label     String
+  tone      String   @default("neutral")
+  isFinal   Boolean  @default(false) @map("is_final")
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  requests    ApplicationRequest[]
+  historyFrom RequestStatusHistory[] @relation("history_from")
+  historyTo   RequestStatusHistory[] @relation("history_to")
+
+  @@map("request_statuses")
+}
+
+model UrgencyLevel {
+  code      String   @id
+  label     String
+  tone      String   @default("neutral")
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  requests ApplicationRequest[]
+
+  @@map("urgency_levels")
+}
+
+model ScholarshipType {
+  code      String   @id
+  label     String
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  scholarships Scholarship[]
+
+  @@map("scholarship_types")
+}
+
+model IssueType {
+  code      String   @id
+  label     String
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  requests ApplicationRequest[]
+
+  @@map("issue_types")
+}
+
+model FamilyStatus {
+  code      String   @id
+  label     String
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  requests ApplicationRequest[]
+
+  @@map("family_statuses")
+}
+
+model PayoutMethod {
+  code      String   @id
+  label     String
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  requests ApplicationRequest[]
+
+  @@map("payout_methods")
+}
+
+// ------------------------------------------------------------------
+// โปรไฟล์นักศึกษา (local data) — ผูกกับผู้ใช้ Core Hub ผ่าน core_user_id เท่านั้น
+// full_name / phone / year_level ฯลฯ ยังไม่มีใน Core Hub v1.0 จึงเก็บเป็นข้อมูลของระบบย่อย
+// (data-dictionary.md ข้อ 1.3 — บันทึกไว้ใน REPORT.md)
+// ------------------------------------------------------------------
+
+
+// ------------------------------------------------------------------
+// ประกาศทุนการศึกษา
+// ------------------------------------------------------------------
+
+model Scholarship {
+  id                 String   @id @default(uuid())
+  title              String
+  typeCode           String   @map("type_code")
+  amountMinSatang    Int      @default(0) @map("amount_min_satang")
+  amountMaxSatang    Int      @map("amount_max_satang")
+  amountNote         String   @default("") @map("amount_note")
+  deadline           DateTime @db.Date
+  quota              Int      @default(0)
+  criteria           String
+  minGpaHundredths   Int      @default(0) @map("min_gpa_hundredths")
+  description        String   @default("")
+  isActive           Boolean  @default(true) @map("is_active")
+  createdByCoreUserId String  @map("created_by_core_user_id")
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  type     ScholarshipType      @relation(fields: [typeCode], references: [code])
+  requests ApplicationRequest[]
+
+  @@index([deadline])
+  @@index([isActive])
+  @@map("scholarships")
+}
+
+// ------------------------------------------------------------------
+// คำร้อง: ใบสมัครทุน (SCHOLARSHIP) และคำร้องขอความช่วยเหลือฉุกเฉิน (WELFARE)
+// ------------------------------------------------------------------
+
+enum RequestKind {
+  SCHOLARSHIP
+  WELFARE
+}
+
+model ApplicationRequest {
+  id                    String      @id @default(uuid())
+  trackingNo            String      @unique @map("tracking_no")
+  kind                  RequestKind
+  /// ผู้ยื่น = claim sub (text ≤ 64 · ไม่ใช่ UUID · ไม่ unique) — data-dictionary 1.1 ข้อ 3
+  coreUserId            String      @map("core_user_id")
+  /// รหัสนักศึกษาจาก Core Hub GET /people/me ตอนยื่น (null = บัญชียังไม่ผูกกับบุคคล) · ชื่อ/คณะดูจาก Core Hub ตอนแสดงผล ไม่เก็บ
+  personCode            String?     @map("person_code")
+  /// เบอร์ติดต่อกลับสำหรับคำร้องนี้ (ข้อมูลของคำร้อง ไม่ใช่ข้อมูลบุคคลของ Core Hub)
+  contactPhone          String      @map("contact_phone")
+  /// ข้อมูลที่ผู้สมัครแจ้งในใบสมัครทุน — GPA เก็บเป็นร้อยส่วน (3.25 → 325)
+  gpaHundredths         Int?        @map("gpa_hundredths")
+  age                   Int?
+  nationality           String?
+  nationalId            String?     @map("national_id")
+  scholarshipId         String?     @map("scholarship_id")
+  issueCode             String?     @map("issue_code")
+  urgencyCode           String?     @map("urgency_code")
+  familyIncomeSatang    Int?        @map("family_income_satang")
+  familyStatusCode      String?     @map("family_status_code")
+  familyExpenses        String?     @map("family_expenses")
+  amountRequestedSatang Int         @map("amount_requested_satang")
+  amountApprovedSatang  Int?        @map("amount_approved_satang")
+  payoutCode            String      @map("payout_code")
+  payoutAccount         String      @map("payout_account")
+  reason                String
+  statusCode            String      @map("status_code")
+  staffNote             String      @default("") @map("staff_note")
+  createdAt             DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt             DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  scholarship  Scholarship?     @relation(fields: [scholarshipId], references: [id], onDelete: Restrict)
+  issueType    IssueType?       @relation(fields: [issueCode], references: [code])
+  urgencyLevel UrgencyLevel?    @relation(fields: [urgencyCode], references: [code])
+  familyStatus FamilyStatus?    @relation(fields: [familyStatusCode], references: [code])
+  payoutMethod PayoutMethod     @relation(fields: [payoutCode], references: [code])
+  status       RequestStatus    @relation(fields: [statusCode], references: [code])
+  attachments  Attachment[]
+  history      RequestStatusHistory[]
+
+  // 1 คน : 1 ใบ ต่อ 1 ทุน ตรวจใน service (ไม่นับใบที่ถูกยกเลิก จึงสมัครใหม่ได้หลังยกเลิก)
+  @@index([coreUserId])
+  @@index([coreUserId, scholarshipId])
+  @@index([personCode])
+  @@index([kind])
+  @@index([statusCode])
+  @@index([createdAt])
+  @@map("requests")
+}
+
+// ------------------------------------------------------------------
+// ไฟล์แนบ (ไฟล์จริงเก็บที่ UPLOAD_DIR ชื่อไฟล์ = id + นามสกุล)
+// ------------------------------------------------------------------
+
+model Attachment {
+  id                   String   @id @default(uuid())
+  requestId            String   @map("request_id")
+  originalName         String   @map("original_name")
+  storedName           String   @map("stored_name")
+  mimeType             String   @map("mime_type")
+  sizeBytes            Int      @map("size_bytes")
+  uploadedByCoreUserId String   @map("uploaded_by_core_user_id")
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  request ApplicationRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+  @@map("attachments")
+}
+
+// ------------------------------------------------------------------
+// ประวัติการเปลี่ยนสถานะ (audit trail)
+// ------------------------------------------------------------------
+
+model RequestStatusHistory {
+  id                  String   @id @default(uuid())
+  requestId           String   @map("request_id")
+  fromStatusCode      String?  @map("from_status_code")
+  toStatusCode        String   @map("to_status_code")
+  note                String   @default("")
+  changedByCoreUserId String   @map("changed_by_core_user_id")
+  changedByRole       String   @map("changed_by_role")
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  request    ApplicationRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  fromStatus RequestStatus?     @relation("history_from", fields: [fromStatusCode], references: [code])
+  toStatus   RequestStatus      @relation("history_to", fields: [toStatusCode], references: [code])
+
+  @@index([requestId, createdAt])
+  @@map("request_status_histories")
+}
