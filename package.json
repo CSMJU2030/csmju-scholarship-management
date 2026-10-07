@@ -1,5 +1,19 @@
 {
-  "name": "csmju-scholarship-management",
+  "name": "csmju-scholarship",
   "private": true,
-  "packageManager": "pnpm@9.15.9"
+  "packageManager": "pnpm@12.3.4",
+  "scripts": {
+    "dev:backend": "pnpm --filter backend start:dev",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:portal": "node tools/dev-portal/server.mjs",
+    "build": "pnpm -r build",
+    "test": "pnpm --filter backend test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "db:migrate": "pnpm --filter backend db:migrate",
+    "db:seed": "pnpm --filter backend db:seed"
+  },
+  "engines": {
+    "node": ">=22 <23"
+  }
 }

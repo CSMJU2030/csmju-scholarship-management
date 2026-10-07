@@ -1,0 +1,2719 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/health": {
+      "get": {
+        "operationId": "HealthController_check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/HealthDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "health check + สถานะพอร์ทัล CSMJU2030",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/api/v1/me": {
+      "get": {
+        "operationId": "MeController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/MeDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "ข้อมูลผู้ใช้ปัจจุบัน",
+        "tags": [
+          "me"
+        ]
+      }
+    },
+    "/api/v1/request-statuses": {
+      "get": {
+        "operationId": "LookupsController_requestStatuses",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LookupItemDto"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMetaDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "สถานะคำร้อง",
+        "tags": [
+          "reference-data"
+        ]
+      }
+    },
+    "/api/v1/urgency-levels": {
+      "get": {
+        "operationId": "LookupsController_urgencyLevels",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LookupItemDto"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMetaDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "ระดับความเร่งด่วน",
+        "tags": [
+          "reference-data"
+        ]
+      }
+    },
+    "/api/v1/scholarship-types": {
+      "get": {
+        "operationId": "LookupsController_scholarshipTypes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LookupItemDto"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMetaDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "ประเภททุน",
+        "tags": [
+          "reference-data"
+        ]
+      }
+    },
+    "/api/v1/issue-types": {
+      "get": {
+        "operationId": "LookupsController_issueTypes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LookupItemDto"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMetaDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "ประเภทความเดือดร้อน",
+        "tags": [
+          "reference-data"
+        ]
+      }
+    },
+    "/api/v1/family-statuses": {
+      "get": {
+        "operationId": "LookupsController_familyStatuses",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LookupItemDto"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMetaDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "สถานภาพครอบครัว",
+        "tags": [
+          "reference-data"
+        ]
+      }
+    },
+    "/api/v1/payout-methods": {
+      "get": {
+        "operationId": "LookupsController_payoutMethods",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LookupItemDto"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMetaDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "ช่องทางรับเงิน",
+        "tags": [
+          "reference-data"
+        ]
+      }
+    },
+    "/api/v1/scholarships": {
+      "get": {
+        "operationId": "ScholarshipsController_list",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "includeInactive",
+            "required": false,
+            "in": "query",
+            "description": "รวมประกาศที่ปิดแล้ว (เฉพาะเจ้าหน้าที่)",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "typeCode",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "description": "ค้นจากชื่อทุน/เกณฑ์",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "closingWithinDays",
+            "required": false,
+            "in": "query",
+            "description": "เฉพาะทุนที่ปิดรับภายใน N วัน (ยังไม่หมดเขต)",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ScholarshipDto"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMetaDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "รายการประกาศทุน",
+        "tags": [
+          "scholarships"
+        ]
+      },
+      "post": {
+        "operationId": "ScholarshipsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateScholarshipDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ScholarshipDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "สร้างประกาศทุน (เจ้าหน้าที่)",
+        "tags": [
+          "scholarships"
+        ]
+      }
+    },
+    "/api/v1/scholarships/{id}": {
+      "get": {
+        "operationId": "ScholarshipsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ScholarshipDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "รายละเอียดประกาศทุน",
+        "tags": [
+          "scholarships"
+        ]
+      },
+      "patch": {
+        "operationId": "ScholarshipsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateScholarshipDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ScholarshipDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "แก้ไข / เปิด-ปิดประกาศทุน (เจ้าหน้าที่)",
+        "tags": [
+          "scholarships"
+        ]
+      },
+      "delete": {
+        "operationId": "ScholarshipsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/DeletedDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "ลบประกาศทุนที่ยังไม่มีใบสมัคร (ผู้ดูแลระบบ)",
+        "tags": [
+          "scholarships"
+        ]
+      }
+    },
+    "/api/v1/requests": {
+      "get": {
+        "operationId": "RequestsController_list",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "kind",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SCHOLARSHIP",
+                "WELFARE"
+              ]
+            }
+          },
+          {
+            "name": "statusCode",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "trackingNo",
+            "required": false,
+            "in": "query",
+            "description": "รหัสติดตามคำร้อง เช่น MJU-SCH-2026-0001",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "description": "ค้นจากชื่อ รหัสนักศึกษา รหัสติดตาม หรือชื่อทุน",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RequestSummaryDto"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMetaDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "รายการคำร้อง (นักศึกษาเห็นเฉพาะของตัวเอง · เจ้าหน้าที่เห็นทั้งหมด)",
+        "tags": [
+          "requests"
+        ]
+      },
+      "post": {
+        "operationId": "RequestsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/RequestDetailDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "ยื่นใบสมัครทุน / คำร้องขอความช่วยเหลือฉุกเฉิน (นักศึกษา)",
+        "tags": [
+          "requests"
+        ]
+      }
+    },
+    "/api/v1/requests/{id}": {
+      "get": {
+        "operationId": "RequestsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/RequestDetailDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "รายละเอียดคำร้อง พร้อมไฟล์แนบและประวัติสถานะ",
+        "tags": [
+          "requests"
+        ]
+      },
+      "patch": {
+        "operationId": "RequestsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/RequestDetailDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "เจ้าหน้าที่: เปลี่ยนสถานะ/บันทึกผลพิจารณา · เจ้าของ: แก้ไขหรือยกเลิกคำร้องที่ยังรอพิจารณา",
+        "tags": [
+          "requests"
+        ]
+      }
+    },
+    "/api/v1/requests/{id}/attachments": {
+      "get": {
+        "operationId": "AttachmentsController_list",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data",
+                    "meta"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AttachmentDto"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMetaDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "รายการไฟล์แนบของคำร้อง",
+        "tags": [
+          "attachments"
+        ]
+      },
+      "post": {
+        "operationId": "AttachmentsController_upload",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/AttachmentDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "แนบไฟล์หลักฐานให้คำร้องของตัวเอง (multipart field: file)",
+        "tags": [
+          "attachments"
+        ]
+      }
+    },
+    "/api/v1/attachments/{id}": {
+      "get": {
+        "operationId": "AttachmentsController_open",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ไฟล์ต้นฉบับ",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/webp": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "เปิดไฟล์แนบ (เจ้าของคำร้อง หรือเจ้าหน้าที่)",
+        "tags": [
+          "attachments"
+        ]
+      }
+    },
+    "/api/v1/request-statistics": {
+      "get": {
+        "operationId": "StatisticsController_summary",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/RequestStatisticsDto"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error envelope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "สรุปภาพรวมคำร้องสำหรับหน้าเจ้าหน้าที่",
+        "tags": [
+          "statistics"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "csmju-scholarship API",
+    "description": "ระบบทุนการศึกษาและสวัสดิการนักศึกษา สาขาวิทยาการคอมพิวเตอร์ (CSMJU2030 subsystem)",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "PortalDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "http://localhost:3100",
+            "description": "เว็บพอร์ทัล CSMJU2030 (Core Hub)"
+          },
+          "reachable": {
+            "type": "boolean",
+            "description": "พอร์ทัลออนไลน์อยู่หรือไม่ (ตรวจทุก 30 วินาที)"
+          }
+        },
+        "required": [
+          "url",
+          "reachable"
+        ]
+      },
+      "HealthDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ]
+          },
+          "service": {
+            "type": "string",
+            "example": "csmju-scholarship"
+          },
+          "portal": {
+            "$ref": "#/components/schemas/PortalDto"
+          }
+        },
+        "required": [
+          "status",
+          "service",
+          "portal"
+        ]
+      },
+      "PaginationMetaDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "total",
+          "page",
+          "limit",
+          "totalPages"
+        ]
+      },
+      "ErrorDetailDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "BAD_REQUEST",
+              "VALIDATION_ERROR",
+              "UNAUTHORIZED",
+              "FORBIDDEN",
+              "NOT_FOUND",
+              "CONFLICT",
+              "TOO_MANY_REQUESTS",
+              "INTERNAL_ERROR",
+              "SERVICE_UNAVAILABLE"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "ErrorBodyDto": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetailDto"
+          }
+        },
+        "required": [
+          "success",
+          "error"
+        ]
+      },
+      "SessionDto": {
+        "type": "object",
+        "properties": {
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "expiresAt"
+        ]
+      },
+      "PersonDto": {
+        "type": "object",
+        "properties": {
+          "personCode": {
+            "type": "string"
+          },
+          "personType": {
+            "type": "string",
+            "example": "STUDENT"
+          },
+          "fullNameTh": {
+            "type": "string"
+          },
+          "fullNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "entryYear": {
+            "type": "number",
+            "nullable": true,
+            "description": "ปี พ.ศ. ที่เข้าศึกษา"
+          },
+          "status": {
+            "type": "string",
+            "example": "ACTIVE"
+          },
+          "facultyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "facultyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "departmentCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "departmentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "curriculumName": {
+            "type": "string",
+            "nullable": true
+          },
+          "universityEmail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "personCode",
+          "personType",
+          "fullNameTh",
+          "fullNameEn",
+          "entryYear",
+          "status",
+          "facultyCode",
+          "facultyName",
+          "departmentCode",
+          "departmentName",
+          "curriculumName",
+          "universityEmail"
+        ]
+      },
+      "LastApplicationDto": {
+        "type": "object",
+        "properties": {
+          "contactPhone": {
+            "type": "string"
+          },
+          "payoutCode": {
+            "type": "string"
+          },
+          "payoutAccount": {
+            "type": "string"
+          },
+          "gpa": {
+            "type": "number",
+            "nullable": true
+          },
+          "age": {
+            "type": "number",
+            "nullable": true
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "contactPhone",
+          "payoutCode",
+          "payoutAccount",
+          "gpa",
+          "age",
+          "nationality"
+        ]
+      },
+      "MeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Core Hub user id (token.sub)"
+          },
+          "email": {
+            "type": "string"
+          },
+          "coreRole": {
+            "type": "string",
+            "enum": [
+              "student",
+              "alumni",
+              "staff",
+              "lecturer",
+              "guest",
+              "admin"
+            ]
+          },
+          "subsystemRole": {
+            "type": "string",
+            "enum": [
+              "STUDENT",
+              "STAFF",
+              "ADMIN"
+            ]
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "session": {
+            "$ref": "#/components/schemas/SessionDto"
+          },
+          "person": {
+            "nullable": true,
+            "description": "จาก Core Hub /people/me",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PersonDto"
+              }
+            ]
+          },
+          "personStatus": {
+            "type": "string",
+            "enum": [
+              "linked",
+              "unlinked",
+              "unavailable"
+            ]
+          },
+          "lastApplication": {
+            "nullable": true,
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LastApplicationDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "coreRole",
+          "subsystemRole",
+          "permissions",
+          "session",
+          "person",
+          "personStatus",
+          "lastApplication"
+        ]
+      },
+      "LookupItemDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "tone": {
+            "type": "string",
+            "enum": [
+              "neutral",
+              "info",
+              "warning",
+              "success",
+              "danger"
+            ]
+          },
+          "isFinal": {
+            "type": "boolean"
+          },
+          "sortOrder": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "code",
+          "label",
+          "sortOrder",
+          "isActive",
+          "updatedAt"
+        ]
+      },
+      "ScholarshipDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "typeCode": {
+            "type": "string"
+          },
+          "typeLabel": {
+            "type": "string"
+          },
+          "amountMinSatang": {
+            "type": "number",
+            "description": "สตางค์"
+          },
+          "amountMaxSatang": {
+            "type": "number",
+            "description": "สตางค์"
+          },
+          "amountNote": {
+            "type": "string"
+          },
+          "amountLabel": {
+            "type": "string",
+            "example": "5,000 บาท / ภาคเรียน"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-11-30"
+          },
+          "daysLeft": {
+            "type": "number",
+            "description": "จำนวนวันถึงวันปิดรับ (เวลาไทย) ติดลบ = เลยแล้ว"
+          },
+          "isExpired": {
+            "type": "boolean"
+          },
+          "isClosingSoon": {
+            "type": "boolean"
+          },
+          "quota": {
+            "type": "number",
+            "description": "0 = ไม่จำกัด"
+          },
+          "minGpa": {
+            "type": "number",
+            "example": 2.5
+          },
+          "criteria": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "applicationCount": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "typeCode",
+          "typeLabel",
+          "amountMinSatang",
+          "amountMaxSatang",
+          "amountNote",
+          "amountLabel",
+          "deadline",
+          "daysLeft",
+          "isExpired",
+          "isClosingSoon",
+          "quota",
+          "minGpa",
+          "criteria",
+          "description",
+          "isActive",
+          "applicationCount",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateScholarshipDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "ทุนสนับสนุนการศึกษา สาขาวิทยาการคอมพิวเตอร์ ภาคเรียนที่ 2/2569"
+          },
+          "typeCode": {
+            "type": "string",
+            "example": "DEPARTMENT"
+          },
+          "amountMinSatang": {
+            "type": "number",
+            "description": "วงเงินขั้นต่ำ (สตางค์)",
+            "example": 500000
+          },
+          "amountMaxSatang": {
+            "type": "number",
+            "description": "วงเงินสูงสุด (สตางค์)",
+            "example": 500000
+          },
+          "amountNote": {
+            "type": "string",
+            "example": "/ ภาคเรียน"
+          },
+          "deadline": {
+            "type": "string",
+            "description": "วันปิดรับสมัคร YYYY-MM-DD",
+            "example": "2026-11-30"
+          },
+          "quota": {
+            "type": "number",
+            "description": "จำนวนทุน (0 = ไม่จำกัด)",
+            "example": 20
+          },
+          "minGpa": {
+            "type": "number",
+            "description": "เกรดเฉลี่ยขั้นต่ำ 0.00–4.00",
+            "example": 2.5
+          },
+          "criteria": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": [
+          "title",
+          "typeCode",
+          "amountMinSatang",
+          "amountMaxSatang",
+          "deadline",
+          "criteria",
+          "description"
+        ]
+      },
+      "UpdateScholarshipDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "ทุนสนับสนุนการศึกษา สาขาวิทยาการคอมพิวเตอร์ ภาคเรียนที่ 2/2569"
+          },
+          "typeCode": {
+            "type": "string",
+            "example": "DEPARTMENT"
+          },
+          "amountMinSatang": {
+            "type": "number",
+            "description": "วงเงินขั้นต่ำ (สตางค์)",
+            "example": 500000
+          },
+          "amountMaxSatang": {
+            "type": "number",
+            "description": "วงเงินสูงสุด (สตางค์)",
+            "example": 500000
+          },
+          "amountNote": {
+            "type": "string",
+            "example": "/ ภาคเรียน"
+          },
+          "deadline": {
+            "type": "string",
+            "description": "วันปิดรับสมัคร YYYY-MM-DD",
+            "example": "2026-11-30"
+          },
+          "quota": {
+            "type": "number",
+            "description": "จำนวนทุน (0 = ไม่จำกัด)",
+            "example": 20
+          },
+          "minGpa": {
+            "type": "number",
+            "description": "เกรดเฉลี่ยขั้นต่ำ 0.00–4.00",
+            "example": 2.5
+          },
+          "criteria": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "DeletedDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "deleted": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "deleted"
+        ]
+      },
+      "ApplicantDto": {
+        "type": "object",
+        "properties": {
+          "personCode": {
+            "type": "string",
+            "nullable": true,
+            "description": "รหัสนักศึกษาจาก Core Hub /people/me ตอนยื่น"
+          },
+          "contactPhone": {
+            "type": "string"
+          },
+          "gpa": {
+            "type": "number",
+            "nullable": true
+          },
+          "age": {
+            "type": "number",
+            "nullable": true
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "nationalId": {
+            "type": "string",
+            "nullable": true,
+            "description": "เฉพาะเจ้าหน้าที่"
+          }
+        },
+        "required": [
+          "personCode",
+          "contactPhone",
+          "gpa",
+          "age",
+          "nationality"
+        ]
+      },
+      "RequestSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "trackingNo": {
+            "type": "string",
+            "example": "MJU-SCH-2026-0001"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "SCHOLARSHIP",
+              "WELFARE"
+            ]
+          },
+          "coreUserId": {
+            "type": "string"
+          },
+          "applicant": {
+            "$ref": "#/components/schemas/ApplicantDto"
+          },
+          "scholarshipId": {
+            "type": "string",
+            "nullable": true
+          },
+          "scholarshipTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "issueCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "issueLabel": {
+            "type": "string",
+            "nullable": true
+          },
+          "urgencyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "urgencyLabel": {
+            "type": "string",
+            "nullable": true
+          },
+          "urgencyTone": {
+            "type": "string",
+            "nullable": true
+          },
+          "familyIncomeSatang": {
+            "type": "number",
+            "nullable": true
+          },
+          "familyStatusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "familyStatusLabel": {
+            "type": "string",
+            "nullable": true
+          },
+          "familyExpenses": {
+            "type": "string",
+            "nullable": true
+          },
+          "amountRequestedSatang": {
+            "type": "number"
+          },
+          "amountApprovedSatang": {
+            "type": "number",
+            "nullable": true
+          },
+          "payoutCode": {
+            "type": "string"
+          },
+          "payoutLabel": {
+            "type": "string"
+          },
+          "payoutAccount": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "string"
+          },
+          "statusLabel": {
+            "type": "string"
+          },
+          "statusTone": {
+            "type": "string"
+          },
+          "isFinal": {
+            "type": "boolean"
+          },
+          "staffNote": {
+            "type": "string"
+          },
+          "attachmentCount": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "trackingNo",
+          "kind",
+          "coreUserId",
+          "applicant",
+          "scholarshipId",
+          "scholarshipTitle",
+          "issueCode",
+          "issueLabel",
+          "urgencyCode",
+          "urgencyLabel",
+          "urgencyTone",
+          "familyIncomeSatang",
+          "familyStatusCode",
+          "familyStatusLabel",
+          "familyExpenses",
+          "amountRequestedSatang",
+          "amountApprovedSatang",
+          "payoutCode",
+          "payoutLabel",
+          "payoutAccount",
+          "reason",
+          "statusCode",
+          "statusLabel",
+          "statusTone",
+          "isFinal",
+          "staffNote",
+          "attachmentCount",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "AttachmentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "originalName": {
+            "type": "string"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "sizeBytes": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "originalName",
+          "mimeType",
+          "sizeBytes",
+          "createdAt"
+        ]
+      },
+      "StatusHistoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "fromStatusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "toStatusCode": {
+            "type": "string"
+          },
+          "toStatusLabel": {
+            "type": "string"
+          },
+          "toStatusTone": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "changedByRole": {
+            "type": "string",
+            "enum": [
+              "STUDENT",
+              "STAFF",
+              "ADMIN"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "fromStatusCode",
+          "toStatusCode",
+          "toStatusLabel",
+          "toStatusTone",
+          "note",
+          "changedByRole",
+          "createdAt"
+        ]
+      },
+      "RequestDetailDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "trackingNo": {
+            "type": "string",
+            "example": "MJU-SCH-2026-0001"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "SCHOLARSHIP",
+              "WELFARE"
+            ]
+          },
+          "coreUserId": {
+            "type": "string"
+          },
+          "applicant": {
+            "$ref": "#/components/schemas/ApplicantDto"
+          },
+          "scholarshipId": {
+            "type": "string",
+            "nullable": true
+          },
+          "scholarshipTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "issueCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "issueLabel": {
+            "type": "string",
+            "nullable": true
+          },
+          "urgencyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "urgencyLabel": {
+            "type": "string",
+            "nullable": true
+          },
+          "urgencyTone": {
+            "type": "string",
+            "nullable": true
+          },
+          "familyIncomeSatang": {
+            "type": "number",
+            "nullable": true
+          },
+          "familyStatusCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "familyStatusLabel": {
+            "type": "string",
+            "nullable": true
+          },
+          "familyExpenses": {
+            "type": "string",
+            "nullable": true
+          },
+          "amountRequestedSatang": {
+            "type": "number"
+          },
+          "amountApprovedSatang": {
+            "type": "number",
+            "nullable": true
+          },
+          "payoutCode": {
+            "type": "string"
+          },
+          "payoutLabel": {
+            "type": "string"
+          },
+          "payoutAccount": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "string"
+          },
+          "statusLabel": {
+            "type": "string"
+          },
+          "statusTone": {
+            "type": "string"
+          },
+          "isFinal": {
+            "type": "boolean"
+          },
+          "staffNote": {
+            "type": "string"
+          },
+          "attachmentCount": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttachmentDto"
+            }
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatusHistoryDto"
+            }
+          },
+          "person": {
+            "nullable": true,
+            "description": "ชื่อผู้ยื่นจาก Core Hub — เฉพาะเจ้าหน้าที่ · หาไม่ได้ = null",
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PersonDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "trackingNo",
+          "kind",
+          "coreUserId",
+          "applicant",
+          "scholarshipId",
+          "scholarshipTitle",
+          "issueCode",
+          "issueLabel",
+          "urgencyCode",
+          "urgencyLabel",
+          "urgencyTone",
+          "familyIncomeSatang",
+          "familyStatusCode",
+          "familyStatusLabel",
+          "familyExpenses",
+          "amountRequestedSatang",
+          "amountApprovedSatang",
+          "payoutCode",
+          "payoutLabel",
+          "payoutAccount",
+          "reason",
+          "statusCode",
+          "statusLabel",
+          "statusTone",
+          "isFinal",
+          "staffNote",
+          "attachmentCount",
+          "createdAt",
+          "updatedAt",
+          "attachments",
+          "history",
+          "person"
+        ]
+      },
+      "CreateRequestDto": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "SCHOLARSHIP",
+              "WELFARE"
+            ]
+          },
+          "contactPhone": {
+            "type": "string",
+            "description": "เบอร์ติดต่อกลับสำหรับคำร้องนี้ 10 หลัก ไม่มีขีด",
+            "example": "0812345678"
+          },
+          "payoutCode": {
+            "type": "string",
+            "example": "PROMPTPAY"
+          },
+          "payoutAccount": {
+            "type": "string",
+            "example": "0812345678"
+          },
+          "amountRequestedSatang": {
+            "type": "number",
+            "description": "จำนวนเงินที่ขอรับ (สตางค์)",
+            "example": 500000
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 2000
+          },
+          "scholarshipId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "nationalId": {
+            "type": "string",
+            "description": "เลขบัตรประชาชน 13 หลัก"
+          },
+          "gpa": {
+            "type": "number",
+            "example": 3.25
+          },
+          "age": {
+            "type": "number",
+            "example": 20
+          },
+          "nationality": {
+            "type": "string",
+            "example": "ไทย"
+          },
+          "familyIncomeSatang": {
+            "type": "number",
+            "description": "รายได้ครอบครัวต่อปี (สตางค์)"
+          },
+          "familyStatusCode": {
+            "type": "string",
+            "example": "TOGETHER"
+          },
+          "familyExpenses": {
+            "type": "string"
+          },
+          "issueCode": {
+            "type": "string",
+            "example": "MEDICAL"
+          },
+          "urgencyCode": {
+            "type": "string",
+            "example": "URGENT"
+          },
+          "acceptTerms": {
+            "type": "boolean",
+            "description": "ต้องเป็น true — รับรองว่าข้อมูลเป็นความจริง"
+          }
+        },
+        "required": [
+          "kind",
+          "contactPhone",
+          "payoutCode",
+          "payoutAccount",
+          "amountRequestedSatang",
+          "reason"
+        ]
+      },
+      "UpdateRequestDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "string",
+            "example": "UNDER_REVIEW"
+          },
+          "staffNote": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "amountApprovedSatang": {
+            "type": "number",
+            "description": "วงเงินที่อนุมัติ (สตางค์)"
+          },
+          "amountRequestedSatang": {
+            "type": "number",
+            "description": "จำนวนเงินที่ขอรับ (สตางค์)"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 2000
+          },
+          "payoutCode": {
+            "type": "string",
+            "example": "PROMPTPAY"
+          },
+          "payoutAccount": {
+            "type": "string"
+          },
+          "familyExpenses": {
+            "type": "string"
+          },
+          "urgencyCode": {
+            "type": "string",
+            "example": "URGENT"
+          },
+          "changeNote": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "เหตุผลที่ยกเลิก/แก้ไข (บันทึกลงประวัติ)"
+          }
+        }
+      },
+      "StatusCountDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "tone": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code",
+          "label",
+          "tone",
+          "total"
+        ]
+      },
+      "MonthlyCountDto": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "type": "string",
+            "example": "2026-09"
+          },
+          "label": {
+            "type": "string",
+            "example": "ก.ย. 69"
+          },
+          "scholarship": {
+            "type": "number"
+          },
+          "welfare": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "month",
+          "label",
+          "scholarship",
+          "welfare"
+        ]
+      },
+      "CodeCountDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "tone": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "code",
+          "label",
+          "total"
+        ]
+      },
+      "TopScholarshipDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "quota": {
+            "type": "number"
+          },
+          "applicationCount": {
+            "type": "number"
+          },
+          "approvedCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "quota",
+          "applicationCount",
+          "approvedCount"
+        ]
+      },
+      "RequestStatisticsDto": {
+        "type": "object",
+        "properties": {
+          "byStatus": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatusCountDto"
+            }
+          },
+          "awaitingActionCount": {
+            "type": "number",
+            "description": "คำร้องที่ยังไม่สิ้นสุด"
+          },
+          "overdueCount": {
+            "type": "number",
+            "description": "รออาจารย์ที่ปรึกษาเกิน 7 วัน"
+          },
+          "approvalRatePercent": {
+            "type": "number",
+            "nullable": true,
+            "description": "อนุมัติ / (อนุมัติ + ไม่ผ่าน)"
+          },
+          "monthly": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthlyCountDto"
+            }
+          },
+          "byIssueType": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodeCountDto"
+            }
+          },
+          "openByUrgency": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodeCountDto"
+            }
+          },
+          "topScholarships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopScholarshipDto"
+            }
+          },
+          "scholarshipRequestCount": {
+            "type": "number"
+          },
+          "welfareRequestCount": {
+            "type": "number"
+          },
+          "totalRequestedSatang": {
+            "type": "number"
+          },
+          "totalApprovedSatang": {
+            "type": "number"
+          },
+          "activeScholarshipCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "byStatus",
+          "awaitingActionCount",
+          "overdueCount",
+          "approvalRatePercent",
+          "monthly",
+          "byIssueType",
+          "openByUrgency",
+          "topScholarships",
+          "scholarshipRequestCount",
+          "welfareRequestCount",
+          "totalRequestedSatang",
+          "totalApprovedSatang",
+          "activeScholarshipCount"
+        ]
+      }
+    }
+  }
+}
