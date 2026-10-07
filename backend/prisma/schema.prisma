@@ -201,16 +201,18 @@ model ApplicationRequest {
 }
 
 // ------------------------------------------------------------------
-// ไฟล์แนบ (ไฟล์จริงเก็บที่ UPLOAD_DIR ชื่อไฟล์ = id + นามสกุล)
+// ไฟล์แนบ — เก็บต้นฉบับในฐานข้อมูล (standards deployment.md ข้อ 4.3: container เขียนดิสก์ไม่ได้)
+// query รายการทั่วไปต้อง select เฉพาะ metadata — ห้ามดึง content มาด้วย
 // ------------------------------------------------------------------
 
 model Attachment {
   id                   String   @id @default(uuid())
   requestId            String   @map("request_id")
   originalName         String   @map("original_name")
-  storedName           String   @map("stored_name")
-  mimeType             String   @map("mime_type")
+  mimeType             String   @map("mime_type") // จากการตรวจ byte ต้นไฟล์ ไม่ใช่ Content-Type ที่ส่งมา
   sizeBytes            Int      @map("size_bytes")
+  sha256               String   @map("sha256") @db.Char(64)
+  content              Bytes    @map("content") // ไฟล์ต้นฉบับ ไม่ย่อ ไม่แปลง
   uploadedByCoreUserId String   @map("uploaded_by_core_user_id")
   createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt            DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)

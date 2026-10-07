@@ -34,7 +34,11 @@ const SUMMARY_INCLUDE = {
 
 const DETAIL_INCLUDE = {
   ...SUMMARY_INCLUDE,
-  attachments: { orderBy: { createdAt: 'asc' as const } },
+  // ห้ามดึง content (ไฟล์ทั้งก้อน) มากับรายละเอียดคำร้อง
+  attachments: {
+    orderBy: { createdAt: 'asc' as const },
+    select: { id: true, originalName: true, mimeType: true, sizeBytes: true, createdAt: true },
+  },
   history: {
     orderBy: { createdAt: 'asc' as const },
     include: { toStatus: { select: { label: true, tone: true } } },

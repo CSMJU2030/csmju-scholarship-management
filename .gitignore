@@ -17,14 +17,12 @@ backend/src/generated/
 .env
 .env.*
 !.env.example
-# backend/.env.example ในเครื่องเก็บค่าจริง — ไม่ push (ดูตัวแปรที่ต้องตั้งใน README)
-backend/.env.example
 *.pem
 *.key
 
-# runtime data
+# runtime data (ไฟล์แนบเก่าก่อน standards 1.8 — ตอนนี้เก็บในฐานข้อมูล)
 backend/uploads/*
-!backend/uploads/.gitkeep
+
 
 # lockfiles อื่นที่ไม่ใช่ pnpm (QA-05)
 package-lock.json

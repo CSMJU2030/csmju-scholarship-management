@@ -5,6 +5,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { buildOpenApi, configureApp, OUTSIDE_API_PREFIX } from './app.setup';
+import { JWT_CONTRACT } from './auth/jwt-contract';
 import { APP_CONFIG, type AppConfig } from './config/configuration';
 
 async function bootstrap(): Promise<void> {
@@ -25,7 +26,18 @@ async function bootstrap(): Promise<void> {
   app.enableShutdownHooks();
 
   await app.listen(config.port);
-  new Logger('Bootstrap').log(`${config.subsystemName} backend listening on :${config.port}`);
+  // logging.md ข้อ 1 — docker compose logs api ต้องเห็น event นี้ (deployment.md ข้อ 6)
+  new Logger('Bootstrap').log(
+    JSON.stringify({
+      event: 'subsystem.started',
+      subsystem: config.subsystemName,
+      port: config.port,
+      coreHubUrl: config.coreHubUrl,
+      jwksUrl: `${config.coreHubUrl}${JWT_CONTRACT.jwksPath}`,
+      issuer: JWT_CONTRACT.issuer,
+      audience: JWT_CONTRACT.audience,
+    }),
+  );
 }
 
 void bootstrap();

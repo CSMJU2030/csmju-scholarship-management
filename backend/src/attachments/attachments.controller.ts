@@ -20,9 +20,11 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { RequirePermissions } from '../auth/decorators/require-permissions.decorator';
 import { Permission } from '../auth/permissions';
 import { ParseUuidV4Pipe } from '../common/parse-uuid-v4.pipe';
+import { maxUploadBytes } from '../config/configuration';
 import { AttachmentsService, type UploadedFileLike } from './attachments.service';
 
-const UPLOAD_LIMIT_BYTES = Number(process.env.MAX_UPLOAD_BYTES ?? 10 * 1024 * 1024);
+// multer ตัดไฟล์ที่เกินตั้งแต่ตอนรับ (deployment.md ข้อ 4.3) — เกินแล้วตอบ 400 VALIDATION_ERROR ผ่าน AllExceptionsFilter
+const UPLOAD_LIMIT_BYTES = maxUploadBytes();
 
 @ApiTags('attachments')
 @ApiBearerAuth()
@@ -67,10 +69,11 @@ export class AttachmentsController {
     const file = await this.attachments.open(user, id);
     response.setHeader('Cache-Control', 'private, no-store');
     response.setHeader('X-Content-Type-Options', 'nosniff');
-    return new StreamableFile(file.stream, {
+    // deployment.md ข้อ 4.3: ดาวน์โหลดเสมอ (attachment) · nosniff · private, no-store
+    return new StreamableFile(file.content, {
       type: file.mimeType,
       length: file.sizeBytes,
-      disposition: `inline; filename*=UTF-8''${encodeURIComponent(file.originalName)}`,
+      disposition: `attachment; filename*=UTF-8''${encodeURIComponent(file.originalName)}`,
     });
   }
 }
