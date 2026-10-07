@@ -1,7 +1,7 @@
 # csmju-scholarship — ระบบทุนการศึกษาและสวัสดิการนักศึกษา
 
 ระบบย่อยของแพลตฟอร์ม **CSMJU2030** (สาขาวิชาวิทยาการคอมพิวเตอร์ คณะวิทยาศาสตร์ มหาวิทยาลัยแม่โจ้)
-ทำตามมาตรฐานกลาง [`csmju2030-standards`](https://github.com/CSMJU2030/csmju2030-standards) เวอร์ชัน `1.7.0`
+ทำตามมาตรฐานกลาง [`csmju2030-standards`](https://github.com/CSMJU2030/csmju2030-standards) เวอร์ชัน `1.8.4`
 
 - สมัครทุนแบบฟอร์มหลายขั้น · บันทึกทุนที่สนใจ (ดาว) · ตัวกรอง/เรียงลำดับ · ตรวจสอบสิทธิ์จากเกรดเฉลี่ย · แจ้งเตือนทุนใกล้ปิดรับ
 - ยื่นคำร้องขอความช่วยเหลือฉุกเฉิน (หลายขั้น) พร้อมแนบไฟล์หลักฐานแบบลากวาง
@@ -16,12 +16,15 @@ mis-scholarship/
 ├── backend/            NestJS 11 + Prisma 7.9.1 + PostgreSQL  → http://127.0.0.1:4227
 │   ├── prisma/         schema.prisma · migrations/ · seed.ts (ข้อมูลอ้างอิงเท่านั้น)
 │   ├── src/auth/       ตรวจ token ของ Core Hub (RS256 + JWKS + kid) · SSO · role/permission
+│   ├── Dockerfile      image ของ api (copy จาก demo-student-subsystem) · docker/entrypoint.sh รัน migrate deploy
 │   └── openapi.json    สัญญา API (generate จากโค้ด)
 ├── frontend/           Next.js (App Router) + Tailwind v4        → http://localhost:3227
-│   └── src/            ส่งต่อ /api/* และ /auth/* ไป backend (origin เดียว)
+│   ├── src/            ส่งต่อ /api/* และ /auth/* ไป backend (origin เดียว)
+│   └── Dockerfile      image ของ web (copy จาก standards/templates/csmju-subsystem-web — ห้ามแก้)
+├── docker-compose.yml  db + api + web แบบเดียวกับ server (ทดสอบในเครื่อง)
 ├── subsystem.yaml      manifest ที่ CI และ conformance อ่าน
 ├── tools/dev-portal/   พอร์ทัลจำลองสำหรับทดสอบในเครื่อง (ไม่ขึ้น server)
-├── .standards-version  1.7.0
+├── .standards-version  1.8.4
 └── pnpm-workspace.yaml
 ```
 
@@ -29,7 +32,8 @@ mis-scholarship/
 |---|---|
 | 3227 | **หน้าเว็บระบบนี้** (เปิดที่นี่ · พอร์ตที่ลงทะเบียน callback) |
 | 4227 | backend ระบบนี้ |
-| 5432 | PostgreSQL (`scholarship_db`) |
+| 5433 | PostgreSQL (`scholarship_db`) ใน Docker — `docker compose up -d db` |
+| 5432 | PostgreSQL ที่ลงไว้ในเครื่องเอง (ถ้าไม่ใช้ Docker) |
 | 3000 · 3100 | พอร์ทัลจำลอง (`pnpm dev:portal`) — ใช้เฉพาะตอนยังไม่เชื่อมพอร์ทัลจริง |
 
 > พอร์ต 32xx/42xx ตามที่ผู้ดูแล dev server กำหนดให้ทีม (standards `connect-core-hub.md` ข้อ 1) —
@@ -41,7 +45,7 @@ mis-scholarship/
 
 ใช้ PowerShell ในโฟลเดอร์โปรเจกต์ (คำสั่ง `curl` / สคริปต์ `.sh` ใช้ Git Bash)
 
-**1. เตรียมเครื่อง** — Node.js 22.x · PostgreSQL 16+ · pnpm
+**1. เตรียมเครื่อง** — Node.js 22.x · pnpm · Docker Desktop (หรือ PostgreSQL 16+ ที่ลงเอง)
 
 ```powershell
 # เปิด PowerShell แบบ Run as Administrator ครั้งเดียว
@@ -49,11 +53,13 @@ corepack enable pnpm
 pnpm -v        # ต้องได้ 12.3.4 (corepack อ่านจาก packageManager ใน package.json)
 ```
 
-**2. สร้างฐานข้อมูล** — ใน pgAdmin หรือ psql ด้วย user `postgres`
+**2. สร้างฐานข้อมูล** — แบบใดแบบหนึ่ง
 
-```sql
-CREATE DATABASE scholarship_db;
+```powershell
+docker compose up -d db     # แบบ A (แนะนำ): PostgreSQL ใน Docker ที่พอร์ต 5433 — ตรงกับค่าใน backend/.env.example
 ```
+
+แบบ B: PostgreSQL ที่ลงในเครื่องเอง — ใน pgAdmin หรือ psql ด้วย user `postgres` สั่ง `CREATE DATABASE scholarship_db;`
 
 **3. ตั้งค่า backend**
 
@@ -62,11 +68,13 @@ copy backend\.env.example backend\.env
 notepad backend\.env
 ```
 
-แก้บรรทัด `DATABASE_URL` ให้เป็นรหัสผ่าน postgres ของเครื่อง เช่น
+แบบ A ใช้ค่าเดิมได้เลย · แบบ B แก้บรรทัด `DATABASE_URL` ให้เป็นพอร์ตและรหัสผ่าน postgres ของเครื่อง เช่น
 
 ```text
 DATABASE_URL=postgresql://postgres:<รหัสผ่านของคุณ>@localhost:5432/scholarship_db?schema=public
 ```
+
+`backend/.env.example` คือรายการ env ทั้งหมดที่ DevOps ใช้ตั้งบน server — เพิ่ม env ใหม่ต้องเพิ่มในไฟล์นี้ด้วย และห้ามใส่ค่าลับ
 
 **4. ติดตั้งและสร้างตาราง**
 
@@ -122,6 +130,49 @@ pnpm dev:frontend   # :3227
 
 > ห้ามใช้พอร์ทัลจำลองบน server จริง — ไม่มีรหัสผ่าน ใครก็เลือกบัญชีได้
 
+## รันด้วย Docker (แบบเดียวกับ server)
+
+ก่อนเปิด PR ที่แก้ Dockerfile · dependency · migration ให้ลองแบบนี้ (ปิด `pnpm dev` ก่อน — ใช้พอร์ต 3227 เหมือนกัน)
+
+```powershell
+docker compose up -d --build   # build image แล้วรัน db + api + web
+docker compose ps              # ทั้งสามต้อง healthy
+docker compose logs api        # ต้องเห็น migration ผ่าน และ subsystem.started
+docker compose down            # หยุด (ข้อมูลยังอยู่ใน volume)
+```
+
+เปิด http://localhost:3227 ด้วย Chrome แล้ว login ผ่าน Core Hub · api ไม่เปิดพอร์ตออกนอก container (เข้าผ่าน web เท่านั้น) ·
+container อ่านอย่างเดียว เขียนได้แค่ `/tmp` และจำกัด RAM เท่า server (api 512 MB · web 384 MB)
+
+> build `frontend` ในเครื่อง Windows (`pnpm -r build`) อาจตกที่ `EPERM: symlink` เพราะ standalone ต้องสร้าง symlink —
+> เปิด Developer Mode ของ Windows หรือทดสอบ build ผ่าน `docker compose` แทน (CI เป็น Linux ไม่มีปัญหานี้)
+
+## ขึ้น server
+
+ตาม standards `docs/deployment.md` — merge เข้า `main` แล้ว GitHub build image ให้เอง (แท็บ **Actions → Images**)
+`ghcr.io/csmju2030/csmju-scholarship-management-api` และ `-web` แล้ว DevOps ดึง `:main` ไปรันภายใน ~10 นาที
+
+| | |
+|---|---|
+| เว็บจริง | `https://csmju-scholarship-management.jowave.com` |
+| Callback (ตั้งใน Core Hub ก่อนวันเปิด) | `https://csmju-scholarship-management.jowave.com/auth/callback` |
+| env บน server | ตาม `backend/.env.example` · ค่าลับส่ง DevOps ทางข้อความส่วนตัว |
+
+> หลังเปลี่ยน callback เป็นโดเมนจริงแล้ว login จาก `localhost` จะใช้ไม่ได้อีก
+
+## ไฟล์แนบ (standards 1.8.3 · deployment.md ข้อ 4.3)
+
+ไฟล์แนบเก็บในฐานข้อมูล (ตาราง `attachments` คอลัมน์ `content`) ไม่เขียนลงดิสก์ เพราะ container บน server อ่านอย่างเดียว ·
+รับเฉพาะ PDF · JPG · PNG · WebP ตรวจชนิดจาก byte ต้นไฟล์ · ไม่เกิน 10 MB · เก็บ `sha256` · เปิดไฟล์แล้วดาวน์โหลดเสมอ
+
+เครื่องที่เคยมีไฟล์แนบใน `backend/uploads` ก่อนเลื่อน 1.8 — `db:migrate` จะตกที่ `20261007090100` ให้ย้ายไฟล์เข้าฐานก่อน:
+
+```powershell
+pnpm --filter backend exec prisma migrate resolve --rolled-back 20261007090100_attachments_content_required
+pnpm --filter backend exec ts-node scripts/move-uploads-to-db.ts
+pnpm --filter backend db:migrate
+```
+
 ## ข้อมูลบุคคล (standards 1.7.0)
 
 ระบบนี้**ไม่เก็บชื่อ อีเมล คณะ สาขา** และไม่มีตารางนักศึกษาของตัวเอง — เก็บแค่ `core_user_id` (claim `sub` · text) กับ `person_code`
@@ -163,7 +214,7 @@ pnpm dev:frontend   # :3227
 ```bash
 git submodule update --init standards/
 pnpm -r typecheck && pnpm -r lint && pnpm --filter backend test && pnpm -r build
-./standards/scripts/run-all-checks.sh .     # static — เหมือน CI
+./standards/scripts/run-all-checks.sh .     # static — เหมือน CI (รวม DEP-01..04 ของ Dockerfile)
 node standards/conformance/run.js           # runtime — ต้องรัน Core Hub + ระบบนี้อยู่
 ```
 
