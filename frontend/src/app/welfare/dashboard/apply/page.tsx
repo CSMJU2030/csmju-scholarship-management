@@ -348,8 +348,9 @@ function ApplyWizard({ me, scholarship }: { me: Me; scholarship: Scholarship }) 
           </Card>
         </div>
 
-        <aside className="space-y-4">
-          <Card className="fade-slide-up stagger-1 overflow-hidden lg:sticky lg:top-24">
+        {/* sticky ทั้งคอลัมน์ — การ์ดทุนกับการ์ดข้อมูลส่วนตัวเลื่อนตามไปด้วยกัน ไม่ทับกัน */}
+        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          <Card className="fade-slide-up stagger-1 overflow-hidden">
             <div className="brand-gradient p-6 text-white">
               <p className="text-label-sm text-white/70">ทุนที่สมัคร</p>
               <h2 className="mt-1 font-display text-headline-md leading-snug">{scholarship.title}</h2>
